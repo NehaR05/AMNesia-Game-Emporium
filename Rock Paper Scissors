@@ -1,0 +1,122 @@
+from tkinter import *
+from tkinter.ttk import *
+import csv
+import random
+import threading
+import time
+
+def rps_func():
+    global rock
+    global sci
+    global paper
+    global point_p
+    global point_s
+    l=['r','p','s']
+    player_move=None
+    point_p=0
+    point_s=0
+    rps=Toplevel(sp)
+    sp.iconify()
+    comprock=PhotoImage(file='comprock.png', master=rps)
+    comppaper=PhotoImage(file='comppaper.png', master=rps)
+    compsci=PhotoImage(file='compsci.png', master=rps)
+    one=PhotoImage(file='1.png', master=rps)
+    two=PhotoImage(file='2.png', master=rps)
+    three=PhotoImage(file='3.png', master=rps)
+    rock=PhotoImage(file='rock n.png', master=rps)
+    paper=PhotoImage(file='paper n.png', master=rps)
+    sci=PhotoImage(file='sci n.png', master=rps)
+    
+    def main_menu_rps():
+        rps.destroy()
+        sp.deiconify()
+    
+    def randfunc(l1,canv,player_move):
+        global point_p
+        global point_s
+        no=random.randint(0,2)
+        move=l1[no]
+        if move=='r':
+            canv.create_image(26,140,anchor=NW,image=comprock)
+            if player_move=='p1':
+                point_p+=1
+                score_p(point_p)
+            elif player_move=='s1':
+                point_s+=1
+                score_s(point_s)
+        elif move=='p':
+            canv.create_image(26,140,anchor=NW,image=comppaper)
+            if player_move=='s1':
+                point_p+=1
+                score_p(point_p)
+            elif player_move=='r1':
+                point_s+=1
+                score_s(point_s)
+        elif move=='s':
+            canv.create_image(26,140,anchor=NW,image=compsci)
+            if player_move=='r1':
+                point_p+=1
+                score_p(point_p)
+            elif player_move=='p1':
+                point_s+=1
+                score_s(point_s)
+                
+    def score_p(point_p):
+        if point_p==1:
+            canv.create_image(500,510,anchor=NW,image=one)
+        elif point_p==2:
+            canv.create_image(500,510,anchor=NW,image=two)
+        elif point_p==3:
+            canv.create_image(500,510,anchor=NW,image=three)
+            rockbutton.destroy()
+            paperbutton.destroy()
+            scibutton.destroy()
+            canv.delete('all')
+            canv.create_text(300, 250, text='YOU WIN', font=("Times New Roman", 30), fill='white')
+            main_menu_but=Button(canv, text="\nMAIN MENU\n", command=main_menu_rps)
+            main_menu_but.place(x=260, y=300)
+            
+    def score_s(point_s):
+        if point_s==1:
+            canv.create_image(1,510,anchor=NW,image=one)
+        elif point_s==2:
+            canv.create_image(1,510,anchor=NW,image=two)
+        elif point_s==3:
+            canv.create_image(1,510,anchor=NW,image=three)
+            rockbutton.destroy()
+            paperbutton.destroy()
+            scibutton.destroy()
+            canv.delete('all')
+            canv.create_text(300, 250, text='YOU LOSE', font=("Times New Roman", 30), fill='white')
+            main_menu_but=Button(canv, text="\nMAIN MENU\n", command=main_menu_rps)
+            main_menu_but.place(x=260, y=300)
+            
+    def sciplay():
+        canv.create_image(326,140,anchor=NW,image=compsci)
+        player_move='s1'
+        randfunc(l,canv,player_move)
+        
+    def rockplay():
+        canv.create_image(326,140,anchor=NW,image=comprock)
+        player_move='r1'
+        randfunc(l,canv,player_move)
+        
+    def paperplay():
+        canv.create_image(326,140,anchor=NW,image=comppaper)
+        player_move='p1'
+        randfunc(l,canv,player_move)
+        
+    rps.geometry('600x600')
+    rps.title('ROCK PAPER SCISSOR')
+    canv=Canvas(rps, bg='dark blue', height='600', width='600')
+    canv.create_text(400,20,text="YOU", font=('Brush Script MT', 30), fill='white')
+    canv.create_text(150,20,text="AMNesia", font=('Brush Script MT', 30), fill='white')
+    line=canv.create_line(1,500,599,500,fill="white")
+    line1=canv.create_line(300,1,300,499,fill="white")
+    rockbutton=Button(canv,image=rock,command=rockplay)
+    paperbutton=Button(canv,image=paper,command=paperplay)
+    scibutton=Button(canv,image=sci,command=sciplay)
+    rockbutton.place(x=150,y=510)
+    paperbutton.place(x=250,y=510)
+    scibutton.place(x=350,y=510)
+    canv.pack()
