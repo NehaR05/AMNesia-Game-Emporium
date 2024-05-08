@@ -1,0 +1,102 @@
+from tkinter import *
+from tkinter.ttk import *
+import csv
+import random
+import threading
+import time
+
+
+def enter():
+     global username
+     global pswd
+     un=username.get()
+     pw=pswd.get()
+     if un!="" and pw!="":
+         fileobj=open("Amnesia Game Emporium.csv", "r")
+         robj=csv.reader(fileobj)
+         for rec in robj:
+             if rec!=[]:
+                 if rec[0]==un:
+                     if rec[1]==pw:
+                         canvas.destroy()
+                         canvas1=Canvas(sp, bg='white', height='900', width='900')
+                         rps_button=Button(canvas1, image=rps_image, command=rps_func)
+                         nm_button=Button(canvas1, image=nm_image, command=nm_func)
+                         tt_button=Button(canvas1, image=tt_image, command=tt_func)
+                         logout_button=Button(canvas1, image=logout_image, command=logout_func)
+                         rps_button.place(x=100, y=100)
+                         nm_button.place(x=100, y=300)
+                         tt_button.place(x=100, y=500)
+                         logout_button.place(x=700, y=15)
+                         canvas1.pack()
+                     else:
+                        canvas.create_text(720, 485, text="Invalid Username or Password.", fill='red', font=('Times New Roman', 20))
+         else:
+             canvas.create_text(720, 485, text="Invalid Username or Password.", fill='red', font=('Times New Roman', 20))
+     else:
+        canvas.create_text(720, 485, text="Invalid Username or Password.", fill='red', font=('Times New Roman', 20))
+
+def logout_func():
+    sp.destroy()
+        
+def signup_new():
+    username_str=username1.get()
+    pswd_str=pswd1.get()
+    if username_str !="" and pswd_str!="":
+        rec=[username_str, pswd_str]
+        filobj=open("Amnesia Game Emporium.csv", "a")
+        wobj=csv.writer(filobj)
+        wobj.writerow(rec)
+        filobj.close()
+        canvas.destroy()
+        canvas1=Canvas(sp, bg='white', height='900', width='900')
+        rps_button=Button(canvas1, image=rps_image, command=rps_func)
+        nm_button=Button(canvas1, image=nm_image, command=nm_func)
+        tt_button=Button(canvas1, image=tt_image, command=tt_func)
+        logout_button=Button(canvas1, image=logout_image, command=logout_func)
+        rps_button.place(x=100, y=100)
+        nm_button.place(x=100, y=300)
+        tt_button.place(x=100, y=500)
+        logout_button.place(x=700, y=15)
+        canvas1.pack()
+    else:
+        canvas.create_text(720, 485, text="Invalid Username or Password.", fill='red', font=('Times New Roman', 20))
+        
+def signup():
+    global username1
+    global pswd1
+    username.destroy()
+    pswd.destroy()
+    login_button.destroy()
+    signup_button.destroy()
+    username1=Entry(sp, width=15, font=('Times New Roman', 24))
+    canvas.create_window(720, 400, window=username1)
+    pswd1=Entry(sp, width=15, font=('Times New Roman', 24))
+    canvas.create_window(720, 450, window=pswd1)
+    login_button1=Button(canvas, text='\nSIGN UP\n', width=20,  command=signup_new)
+    login_button1.place(x=750, y=500)
+
+sp=Tk()
+sp.title('Amnesia Game Emporium')
+sp.geometry('1000x1000')
+logo=PhotoImage(file='logo.png')
+login=PhotoImage(file='login.png')
+rps_image=PhotoImage(file='rps_image.png', master=sp)
+nm_image=PhotoImage(file='nm_image.png', master=sp)
+tt_image=PhotoImage(file='tt_image.png', master=sp)
+logout_image=PhotoImage(file='logout.png', master=sp)
+canvas=Canvas(sp, bg='white', height='900', width='900')
+canvas.create_image(290, 400, image=logo)
+canvas.create_image(710, 250, image=login)
+canvas.create_text(600, 600, text="Don't have an account yet?", fill='black', font=('Times New Roman', 20))
+signup_button=Button(canvas, text='Sign Up', command=signup)
+signup_button.place(x=780, y=585)
+username=Entry(sp, width=15, font=('Times New Roman', 24))
+canvas.create_text(500, 400, text="Enter Username:", fill='black', font=('Times New Roman', 20))
+canvas.create_window(720, 400, window=username)
+pswd=Entry(sp, width=15, font=('Times New Roman', 24))
+canvas.create_text(535, 450, text="Password:", fill='black', font=('Times New Roman', 20))
+canvas.create_window(720, 450, window=pswd)
+login_button=Button(canvas, text='\nLOGIN\n', width=20,  command=enter)
+login_button.place(x=750, y=500)
+canvas.pack()
