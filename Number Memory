@@ -1,0 +1,64 @@
+from tkinter import *
+from tkinter.ttk import *
+import csv
+import random
+import threading
+import time
+
+def nm_func():
+    global numstart
+    global numend
+    global count
+    nm=Toplevel(sp)
+    sp.iconify()
+    nm.title('Number Memory')
+    nm.geometry('700x600')
+    numstart=0
+    numend=10
+    count=1
+    sub=PhotoImage(file='sub.png')
+        
+    def numgen():
+        global numstart
+        global numend
+        global num_str
+        global count
+        num=0
+        num=random.randint(numstart, numend)
+        numstart+=10**count
+        numend+=10**(count+1)
+        num_str=str(num)
+        num=canv2.create_text(200, 200)
+        canv2.itemconfig(num, text=num_str, fill='white', font=("Times New Roman", 32))
+        nm.after(5000, lambda: canv2.itemconfig(num, text=''))
+        nm.after(6000, lambda: enter_value())
+        count+=1
+    def enter_value():
+        global num_enter
+        global info
+        global submit
+        info=canv2.create_text(200, 100)
+        canv2.itemconfig(info, text='ENTER THE NUMBER', fill='black', font=("Times New Roman", 20))
+        num_enter=Entry(nm, font=('Times New Roman', 24))
+        canv2.create_window(200, 200, window=num_enter,width=382)
+        submit=Button(canv2, image=sub, command=lambda: process())
+        submit.place(x=120, y=300)
+
+    def process():
+        value=num_enter.get()
+        if value==num_str:
+            nm.after(5, lambda: canv2.delete('all'))
+            nm.after(10, lambda: submit.destroy())
+            nm.after(15, lambda: numgen())
+        else:
+            canv2.delete('all')
+            submit.destroy()
+            canv2.create_text(200, 100, text="The Number", fill='black', font=("Times New Roman", 20))
+            canv2.create_text(200, 150, text=num_str, fill='dark green', font=("Times New Roman", 20))
+            canv2.create_text(200, 200, text="Your Answer", fill='black', font=("Times New Roman", 20))
+            canv2.create_text(200, 250, text=value, fill='red', font=("Times New Roman", 20))
+            nm.after(3000, lambda: nm.destroy())
+            nm.after(1000, lambda: sp.deiconify())
+    canv2=Canvas(nm, bg='light blue', height='400', width='400')
+    canv2.pack()
+    numgen()   
