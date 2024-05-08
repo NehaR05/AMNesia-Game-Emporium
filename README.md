@@ -27,14 +27,10 @@ Our project, being related to games, takes advantage of the Python tkinter modul
 
 
 # Python Modules
-1. Tkinter
-    The standard GUI library for python. Used to create GUI applications.
+1. Tkinter: the standard GUI library for python. Used to create GUI applications.
    
-3. Random
-    An inbuilt module in python, used to generate random numbers. Can be used to display a random item from a list.
+2. Random: an inbuilt module in python, used to generate random numbers. Can be used to display a random item from a list.
    
-3. Time
-    A module that allows the user to work with time. Used to display the current time, repeat a particular function after a particular     interval of time, etc.
+3. Time: a module that allows the user to work with time. Used to display the current time, repeat a particular function after a particular interval of time, etc.
 
-4. csv
-    Provides the option of reading and writing into the csv file through reader and writer objects respectively.
+4. csv: provides the option of reading and writing into the csv file through reader and writer objects respectively.
